@@ -27,6 +27,8 @@
     "webpack-dev-server": "3.11.0"
   },
   "dependencies": {
+    "@babel/plugin-transform-runtime": "^7.11.5",
+    "@babel/runtime": "^7.11.2",
     "devextreme-react": "^20.1.7",
     "react": "^16.13.0",
     "react-dom": "^16.13.0"
