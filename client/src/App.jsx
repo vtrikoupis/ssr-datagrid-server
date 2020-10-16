@@ -77,8 +77,8 @@ const App = () => {
           showBorders={true}
           onEditingStart={(e) => startingToEdit(e)}
           onRowUpdated={(e) => rowUpdated(e)}
-        // this next line only works with static data? why not with dynamic?
-        // defaultColumns={columns}
+          // this next line only works with static data? why not with dynamic?
+          defaultColumns={columns}
         >
           <Editing
             mode="cell"
