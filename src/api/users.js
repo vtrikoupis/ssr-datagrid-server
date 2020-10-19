@@ -24,6 +24,16 @@ router.get('/', async (req, res, next) => {
   }
 })
 
+// READ ALL but don't retrieve the role col
+router.get('/no-role', async (req, res, next) => {
+  try {
+    const items = await users.find({}, { fields: { role: 0 } })
+    res.json(items)
+  } catch (error) {
+    next(error)
+  }
+})
+
 // READ ONE 
 router.get('/:id', async (req, res, next) => {
   try {
