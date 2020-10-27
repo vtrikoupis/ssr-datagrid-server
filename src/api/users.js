@@ -5,6 +5,7 @@ const Joi = require("@hapi/joi");
 
 const db = monk(process.env.MONGO_URI);
 const users = db.get('users');
+const settings = db.get('settings')
 
 const user_schema = Joi.object({
   id: Joi.string().trim().required(),
@@ -35,13 +36,22 @@ router.get('/no-role', async (req, res, next) => {
   }
 })
 
+router.get('/no-role/settings', async (req, res, next) => {
+  try {
+    const items = await settings.find({}, { fields: { role: 0 } })
+    res.json(items)
+  } catch (error) {
+    next(error)
+  }
+})
+
 // READ ONE 
 router.get('/:id', async (req, res, next) => {
   try {
     const { id } = req.params;
     console.log(id)
     const item = await users.findOne({
-     
+
     })
     console.log("here")
     console.log(item)
