@@ -8,9 +8,13 @@ const users = db.get('users');
 const settings = db.get('settings')
 
 const user_schema = Joi.object({
-  id: Joi.string().trim().required(),
+  '_id': Joi.string().trim().required(),
+  uid: Joi.string().trim().required(),
   name: Joi.string().trim().required(),
-  role: Joi.string().trim().required(),
+  role: Joi.string().trim().allow(''),
+  email: Joi.string().trim(),
+  modules: Joi.string().trim(),
+  details: Joi.string().trim(),
 });
 
 const router = express.Router();
@@ -29,7 +33,8 @@ router.get('/', async (req, res, next) => {
 
 router.get('/no-role', async (req, res, next) => {
   try {
-    const items = await users.find({}, { fields: { role: 0 } })
+    // const items = await users.find({}, { fields: { role: 0 } })
+    const items = await users.find({})
     res.json(items)
   } catch (error) {
     next(error)
@@ -38,7 +43,8 @@ router.get('/no-role', async (req, res, next) => {
 
 router.get('/no-role/settings', async (req, res, next) => {
   try {
-    const items = await settings.find({}, { fields: { role: 0 } })
+    // const items = await settings.find({}, { fields: { role: 0 } })
+    const items = await settings.find({})
     res.json(items)
   } catch (error) {
     next(error)
@@ -79,16 +85,17 @@ router.put('/:id', async (req, res, next) => {
     const { id } = req.params;
     const value = await user_schema.validateAsync(req.body)
     const item = await users.findOne({
-      uid: id,
+      _id: id,
     })
     if (!item) return next();
     await users.update({
-      uid: id,
+      _id: id,
     }, {
       $set: value
     });
     res.json(value)
   } catch (error) {
+    console.log(error)
     next(error)
   }
 })

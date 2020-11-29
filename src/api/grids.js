@@ -53,6 +53,7 @@ router.post('/', async (req, res, next) => {
 router.put('/:id', async (req, res, next) => {
   try {
     const { id } = req.params;
+    console.log(id)
     const value = await user_schema.validateAsync(req.body)
     const item = await grids.findOne({
       _id: id,
