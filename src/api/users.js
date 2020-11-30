@@ -17,6 +17,11 @@ const user_schema = Joi.object({
   details: Joi.string().trim(),
 });
 
+const settings_schema = Joi.object({
+  '_id': Joi.string().trim().required(),
+  filters: Joi.string().trim()
+});
+
 const router = express.Router();
 
 // READ ALL
@@ -97,6 +102,33 @@ router.put('/:id', async (req, res, next) => {
   } catch (error) {
     console.log(error)
     next(error)
+  }
+})
+
+router.put('/no-role/settings', async (req, res, next) => {
+
+  const { _id, filters } = req.body
+
+  try {
+    console.log(req.body)
+    const value = await settings_schema.validateAsync(req.body)
+    const { _id, filters } = value
+    await settings.update({
+      _id: _id,
+
+    }, {
+      $set: {
+        filters: filters
+      }
+    });
+    res.json(value)
+  } catch (error) {
+
+    next(error)
+    console.log("ERRROR")
+    console.log(filters)
+    console.log(_id)
+    console.log(error)
   }
 })
 
